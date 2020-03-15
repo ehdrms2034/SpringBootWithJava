@@ -1,0 +1,33 @@
+@import '~antd/dist/antd.css';
+
+.background{
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+.signup-presenter{
+  width: 1280px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .login-form{
+    @extend .flex;
+    width: 300px;
+    padding : 15px;
+    border : 1px solid rgba($color: #333333, $alpha: 0.3)
+  }
+
+  .submit{
+    margin-top: 35px;
+  }
+
+}
+
+.flex{
+  display:flex;
+  flex-direction: column;
+}

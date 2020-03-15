@@ -1,0 +1,34 @@
+@import '~antd/dist/antd.css';
+
+.background{
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+.main-container{
+  width: 1280px;
+  height: 99vh;
+  display : flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .loginForm{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    padding: 30px;
+    border: 1px solid rgba($color: #333333, $alpha: 0.3);
+  }
+  .idInput{
+    width : 300px;
+  }
+
+  .buttonForm{
+    display: flex;
+    margin-top: 35px;
+  }
+  
+}
+
