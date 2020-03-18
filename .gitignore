@@ -149,3 +149,4 @@ thumb
 sketch
 
 # End of https://www.gitignore.io/api/node,java,react,java-web
+Spring_React_Login/backend/src/src/main/resources/application.properties

@@ -1,6 +1,7 @@
 package com.donggeun.springSecurity;
 
 
+import com.donggeun.springSecurity.config.UserRole;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,7 +18,7 @@ public class User {
 
     @NotBlank
     @Column(unique = true)
-    private String id;
+    private String username;
     @NotBlank
     private String password;
     @NotBlank
@@ -27,8 +28,9 @@ public class User {
     @NotBlank
     private String address;
 
-    @Column(name = "role", columnDefinition = "varchar(20) default 'not Permitted'")
-    private String role="not Permitted";
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.ROLE_NOT_PERMITTED;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
@@ -37,11 +39,11 @@ public class User {
     @UpdateTimestamp
     private Date updateAt;
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 
@@ -53,12 +55,12 @@ public class User {
         this.seq = seq;
     }
 
-    public String getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -113,15 +115,14 @@ public class User {
     public String toString() {
         return "User{" +
                 "seq=" + seq +
-                ", id='" + id + '\'' +
+                ", id='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
-                ", role='" + role + '\'' +
+                ", role=" + role +
                 ", createAt=" + createAt +
                 ", updateAt=" + updateAt +
                 '}';
     }
-
 }

@@ -20,7 +20,7 @@ class SpringSecurityApplicationTests {
 	@Test
 	void testDB(){
 		User user = new User();
-		user.setId("user1");
+		user.setUsername("user1");
 		user.setPassword("a1234");
 		user.setName("김동근");
 		user.setEmail("ehdrms2034@naver.com");
