@@ -1,4 +1,4 @@
-package com.donggeun.springSecurity;
+package com.donggeun.springSecurity.model;
 
 public class RequestLoginUser {
     private String username;

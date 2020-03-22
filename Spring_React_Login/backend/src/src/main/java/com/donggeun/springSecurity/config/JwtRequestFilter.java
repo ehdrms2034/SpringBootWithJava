@@ -1,5 +1,6 @@
-package com.donggeun.springSecurity;
+package com.donggeun.springSecurity.config;
 
+import com.donggeun.springSecurity.service.JwtUtil;
 import com.donggeun.springSecurity.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,9 +50,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            }
-            else{
-                System.out.print("유효하지 않은 읍읍");
             }
         }
 

@@ -1,11 +1,15 @@
-package com.donggeun.springSecurity;
+package com.donggeun.springSecurity.controller;
 
+import com.donggeun.springSecurity.model.Member;
+import com.donggeun.springSecurity.model.RequestLoginUser;
+import com.donggeun.springSecurity.model.Response;
+import com.donggeun.springSecurity.service.AuthService;
+import com.donggeun.springSecurity.service.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController

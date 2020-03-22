@@ -1,6 +1,6 @@
-package com.donggeun.springSecurity.service;
+package com.donggeun.springSecurity.service.impl;
 
-import com.donggeun.springSecurity.Member;
+import com.donggeun.springSecurity.model.Member;
 import com.donggeun.springSecurity.repository.MemberRepository;
 import com.donggeun.springSecurity.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
