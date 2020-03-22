@@ -1,5 +1,8 @@
 package com.donggeun.springSecurity;
 
+import com.donggeun.springSecurity.model.Member;
+import com.donggeun.springSecurity.repository.MemberRepository;
+import com.donggeun.springSecurity.service.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 class SpringSecurityApplicationTests {
 
 	@Autowired
-	private UserRepository userRepository;
+	private MemberRepository memberRepository;
+
+	@Autowired
+	private JwtUtil jwtUtil;
 
 	@Test
 	void contextLoads() {
@@ -19,12 +25,19 @@ class SpringSecurityApplicationTests {
 
 	@Test
 	void testDB(){
-		User user = new User();
-		user.setUsername("user1");
-		user.setPassword("a1234");
-		user.setName("김동근");
-		user.setEmail("ehdrms2034@naver.com");
-		user.setAddress("부산광역시 부산진구 땡땡로 땡땡길 101동 1001호");
-		userRepository.save(user);
+		Member member = new Member();
+		member.setUsername("user1");
+		member.setPassword("a1234");
+		member.setName("김동근");
+		member.setEmail("ehdrms2034@naver.com");
+		member.setAddress("부산광역시 부산진구 땡땡로 땡땡길 101동 1001호");
+		memberRepository.save(member);
+	}
+
+	@Test
+	void test(){
+
+		String username = jwtUtil.getUsername("eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImVoZHJtczIwMzQiLCJpYXQiOjE1ODQ2MTkzMTMsImV4cCI6MTU4NDYyMTExM30.llLcxtXVoI3xBROLrrru1IYXSAADywNwtb9IBMhXzfQ");
+		System.out.println(username);
 	}
 }

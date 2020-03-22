@@ -10,14 +10,15 @@ import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
-public class User {
+@Table(name = "Members")
+public class Member {
 
     @Id
     @GeneratedValue
     private int seq;
 
-    @NotBlank
     @Column(unique = true)
+    @NotBlank
     private String username;
     @NotBlank
     private String password;
