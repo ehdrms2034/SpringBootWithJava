@@ -4,12 +4,15 @@ import com.donggeun.springSecurity.model.Member;
 import com.donggeun.springSecurity.model.RequestLoginUser;
 import com.donggeun.springSecurity.model.Response;
 import com.donggeun.springSecurity.service.AuthService;
+import com.donggeun.springSecurity.service.CookieUtil;
 import com.donggeun.springSecurity.service.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -21,6 +24,9 @@ public class MemberController {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private CookieUtil cookieUtil;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -45,6 +51,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public Response login(@RequestBody RequestLoginUser user,
+                          HttpServletRequest req,
                           HttpServletResponse res
 
     ){
@@ -54,7 +61,12 @@ public class MemberController {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
         final String token = jwtUtil.generateToken(member);
 
-        res.setHeader("Authorization",token);
+        if(req.getCookies()!=null){
+            System.out.print(req.getCookies().length);
+        }
+
+        Cookie accessToken = cookieUtil.createCookie("Authorization",token);
+        res.addCookie(accessToken);
 
         response.setData(token);
         response.setResponse("success");

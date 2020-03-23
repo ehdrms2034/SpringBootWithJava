@@ -1,5 +1,6 @@
 package com.donggeun.springSecurity.config;
 
+import com.donggeun.springSecurity.service.CookieUtil;
 import com.donggeun.springSecurity.service.JwtUtil;
 import com.donggeun.springSecurity.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,18 +27,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private CookieUtil cookieUtil;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
-        final String authorizationHeader = httpServletRequest.getHeader("Authorization");
+        final Cookie jwtToken = cookieUtil.getCookie(httpServletRequest,"Authorization");
 
         String username = null;
         String jwt = null;
 
-        System.out.println("이까지 되나되나?1");
-
-        if(authorizationHeader != null){
-            jwt = authorizationHeader;
+        if(jwtToken != null){
+            jwt = jwtToken.getValue();
             username = jwtUtil.getUsername(jwt);
             System.out.println("이까지 되나되나?3");
 

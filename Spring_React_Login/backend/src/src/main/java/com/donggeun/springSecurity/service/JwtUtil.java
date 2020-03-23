@@ -20,7 +20,7 @@ public class JwtUtil {
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
 
-    private final long TOKEN_VALIDATION_SECOND = 1000L* 60 * 30;
+    public final static long TOKEN_VALIDATION_SECOND = 1000L* 60 * 30;
 
     private Key getSigningKey(String secretKey){
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);

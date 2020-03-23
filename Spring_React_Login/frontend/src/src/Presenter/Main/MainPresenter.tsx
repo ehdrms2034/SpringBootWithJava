@@ -2,14 +2,25 @@ import * as React from "react";
 import { Input, Button, Form } from "antd";
 import "./MainPresenter.scss";
 
-const MainPresenter = () => {
+
+type MainPresenterProps = {
+  username: string,
+  setUsername: Function,
+  password: string,
+  setPassword: Function,
+  doLogin: Function,
+  doTest: Function
+}
+
+const MainPresenter = ({
+  username, password,
+  setUsername, setPassword, doLogin, doTest
+}: MainPresenterProps) => {
   return (
     <div className={"background"}>
       <Form
         className={"main-container"}
-        onFinish={() => {
-          alert("제출");
-        }}
+        onFinish={() => { doLogin(username, password) }}
       >
         <div className={"loginForm"}>
           아이디
@@ -17,14 +28,21 @@ const MainPresenter = () => {
             name="userId"
             rules={[{ required: true, message: "Please input yourname!" }]}
           >
-            <Input className={"idInput"} />
+            <Input
+              className={"idInput"}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </Form.Item>
           비밀번호
           <Form.Item
             rules={[{ required: true, message: "Please input password!" }]}
             name="password"
           >
-            <Input.Password />
+            <Input.Password
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
           </Form.Item>
           <span className="buttonForm">
             <Button
@@ -33,11 +51,15 @@ const MainPresenter = () => {
                 marginLeft: "auto",
                 marginRight: "10px"
               }}
+              onClick={e=>{doTest();}}
             >
               회원가입
             </Button>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button
+                type="primary"
+                htmlType="submit"
+              >
                 로그인
               </Button>
             </Form.Item>
