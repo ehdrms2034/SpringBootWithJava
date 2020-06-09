@@ -44,7 +44,6 @@ public class MemberController {
                           HttpServletResponse res) {
         try {
             final Member member = authService.loginUser(user.getUsername(), user.getPassword());
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
             final String token = jwtUtil.generateToken(member);
             Cookie accessToken = cookieUtil.createCookie("Authorization", token);
             res.addCookie(accessToken);
