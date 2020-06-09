@@ -2,6 +2,7 @@ package com.donggeun.springSecurity;
 
 import com.donggeun.springSecurity.model.Member;
 import com.donggeun.springSecurity.repository.MemberRepository;
+import com.donggeun.springSecurity.service.AuthService;
 import com.donggeun.springSecurity.service.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,7 @@ class SpringSecurityApplicationTests {
 
 	@Autowired
 	private MemberRepository memberRepository;
+
 
 	@Autowired
 	private JwtUtil jwtUtil;

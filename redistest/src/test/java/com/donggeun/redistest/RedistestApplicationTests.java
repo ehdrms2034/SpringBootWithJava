@@ -17,7 +17,7 @@ class RedistestApplicationTests {
 
 	@Test
 	void setData(){
-		redisService.setData("hello");
+		redisService.setDataExpire("test","test",20);
 	}
 
 }
