@@ -6,6 +6,7 @@ import com.donggeun.springSecurity.model.Response;
 import com.donggeun.springSecurity.service.AuthService;
 import com.donggeun.springSecurity.service.CookieUtil;
 import com.donggeun.springSecurity.service.JwtUtil;
+import com.donggeun.springSecurity.service.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +28,8 @@ public class MemberController {
     private AuthService authService;
     @Autowired
     private CookieUtil cookieUtil;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @PostMapping("/signup")
     public Response signUpUser(@RequestBody Member member) {
@@ -45,11 +48,15 @@ public class MemberController {
         try {
             final Member member = authService.loginUser(user.getUsername(), user.getPassword());
             final String token = jwtUtil.generateToken(member);
+            final String refreshJwt = jwtUtil.generateRefreshToken(member);
             Cookie accessToken = cookieUtil.createCookie("Authorization", token);
+            Cookie refreshToken = cookieUtil.createCookie("refreshToken",refreshJwt);
+            redisUtil.setDataExpire(refreshJwt,member.getUsername(),JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
             res.addCookie(accessToken);
+            res.addCookie(refreshToken);
             return new Response("success", "로그인에 성공했습니다.", token);
         } catch (Exception e) {
-            return new Response("error", "로그인에 실패했습니다.", null);
+            return new Response("error", "로그인에 실패했습니다.", e.getMessage());
         }
     }
 

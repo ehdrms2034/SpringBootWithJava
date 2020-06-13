@@ -22,7 +22,7 @@ public class AuthServiceTest {
         member.setPassword("a1234");
         member.setName("김동근");
         member.setEmail("ehdrms2034@naver.com");
-        member.setAddress("부산광역시 부산진구 땡땡로 땡땡길 101동 1001호");
+        member.setAddress("대한민국 어디광역시 땡땡로 땡땡길 101동 1001호");
         authService.signUpUser(member);
     }
 

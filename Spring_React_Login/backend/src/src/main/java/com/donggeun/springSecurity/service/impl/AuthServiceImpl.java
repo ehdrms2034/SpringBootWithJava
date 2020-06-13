@@ -5,6 +5,7 @@ import com.donggeun.springSecurity.model.Salt;
 import com.donggeun.springSecurity.repository.MemberRepository;
 import com.donggeun.springSecurity.repository.SaltRepository;
 import com.donggeun.springSecurity.service.AuthService;
+import com.donggeun.springSecurity.service.RedisUtil;
 import com.donggeun.springSecurity.service.SaltUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private SaltUtil saltUtil;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     @Transactional
