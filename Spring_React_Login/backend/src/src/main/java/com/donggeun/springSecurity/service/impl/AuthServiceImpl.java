@@ -1,5 +1,6 @@
 package com.donggeun.springSecurity.service.impl;
 
+import com.donggeun.springSecurity.config.UserRole;
 import com.donggeun.springSecurity.model.Member;
 import com.donggeun.springSecurity.model.Salt;
 import com.donggeun.springSecurity.repository.MemberRepository;
@@ -36,7 +37,6 @@ public class AuthServiceImpl implements AuthService {
     public void signUpUser(Member member) {
         String password = member.getPassword();
         String salt = saltUtil.genSalt();
-        log.info(salt);
         member.setSalt(new Salt(salt));
         member.setPassword(saltUtil.encodePassword(salt,password));
         memberRepository.save(member);
@@ -51,6 +51,12 @@ public class AuthServiceImpl implements AuthService {
         if(!member.getPassword().equals(password))
             throw new Exception ("비밀번호가 틀립니다.");
         return member;
+    }
+
+    @Override
+    public void modifyUserRole(Member member, UserRole userRole){
+            member.setRole(userRole);
+            memberRepository.save(member);
     }
 
 
