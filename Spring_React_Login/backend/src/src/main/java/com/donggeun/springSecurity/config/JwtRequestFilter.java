@@ -6,6 +6,7 @@ import com.donggeun.springSecurity.service.JwtUtil;
 import com.donggeun.springSecurity.service.MyUserDetailsService;
 import com.donggeun.springSecurity.service.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwt;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,14 +42,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
-        final Cookie jwtToken = cookieUtil.getCookie(httpServletRequest,"Authorization");
+        final Cookie jwtToken = cookieUtil.getCookie(httpServletRequest,JwtUtil.ACCESS_TOKEN_NAME);
 
         String username = null;
         String jwt = null;
         String refreshJwt = null;
         String refreshUname = null;
 
-        logger.info("ㅎㅇㅎㅇ");
         try{
             if(jwtToken != null){
                 jwt = jwtToken.getValue();
@@ -64,8 +64,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
             }
         }catch (ExpiredJwtException e){
-            Cookie refreshToken = cookieUtil.getCookie(httpServletRequest,"refreshToken");
-            logger.info("토큰 만료 됐을 시");
+            Cookie refreshToken = cookieUtil.getCookie(httpServletRequest,JwtUtil.REFRESH_TOKEN_NAME);
             if(refreshToken!=null){
                 refreshJwt = refreshToken.getValue();
             }
@@ -75,9 +74,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         try{
             if(refreshJwt != null){
-                logger.info("gkdl");
                 refreshUname = redisUtil.getData(refreshJwt);
-                logger.info(refreshUname);
+
                 if(refreshUname.equals(jwtUtil.getUsername(refreshJwt))){
                     UserDetails userDetails = userDetailsService.loadUserByUsername(refreshUname);
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
@@ -88,14 +86,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     member.setUsername(refreshUname);
                     String newToken =jwtUtil.generateToken(member);
 
-
-                    Cookie newAccessToken = cookieUtil.createCookie("Authorization",newToken);
+                    Cookie newAccessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME,newToken);
                     httpServletResponse.addCookie(newAccessToken);
                     }
             }
         }catch(ExpiredJwtException e){
 
         }
+
         filterChain.doFilter(httpServletRequest,httpServletResponse);
     }
 }

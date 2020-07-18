@@ -1,5 +1,6 @@
 package com.donggeun.springSecurity.controller;
 
+import com.donggeun.springSecurity.config.JwtRequestFilter;
 import com.donggeun.springSecurity.model.Member;
 import com.donggeun.springSecurity.model.RequestLoginUser;
 import com.donggeun.springSecurity.model.Response;
@@ -49,8 +50,8 @@ public class MemberController {
             final Member member = authService.loginUser(user.getUsername(), user.getPassword());
             final String token = jwtUtil.generateToken(member);
             final String refreshJwt = jwtUtil.generateRefreshToken(member);
-            Cookie accessToken = cookieUtil.createCookie("Authorization", token);
-            Cookie refreshToken = cookieUtil.createCookie("refreshToken",refreshJwt);
+            Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
+            Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME,refreshJwt);
             redisUtil.setDataExpire(refreshJwt,member.getUsername(),JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
             res.addCookie(accessToken);
             res.addCookie(refreshToken);

@@ -2,6 +2,7 @@ package com.donggeun.springSecurity.model;
 
 
 import com.donggeun.springSecurity.config.UserRole;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
