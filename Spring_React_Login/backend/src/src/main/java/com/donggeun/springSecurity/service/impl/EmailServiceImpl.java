@@ -12,11 +12,11 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender emailSender;
 
     @Override
-    public void sendFirstVerificationMail(String to){
+    public void sendMail(String to,String sub, String text){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
-        message.setSubject("[로그인서버] 회원가입 사용자 인증 메일입니다.");
-        message.setText("일단은 테스트만 요리조리 할 예정");
+        message.setSubject(sub);
+        message.setText(text);
         emailSender.send(message);
     }
 }

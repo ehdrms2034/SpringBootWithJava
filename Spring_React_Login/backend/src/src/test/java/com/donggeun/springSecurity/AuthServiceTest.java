@@ -1,17 +1,14 @@
 package com.donggeun.springSecurity;
 
 import com.donggeun.springSecurity.model.Member;
-import com.donggeun.springSecurity.model.RequestLoginUser;
+import com.donggeun.springSecurity.model.Request.RequestLoginUser;
 import com.donggeun.springSecurity.service.AuthService;
 import com.donggeun.springSecurity.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @Slf4j
@@ -58,7 +55,7 @@ public class AuthServiceTest {
 
     @Test
     public void sendFirstEmail(){
-        emailService.sendFirstVerificationMail("ehdrms2034@naver.com");
+        emailService.sendMail("ehdrms2034@naver.com","테스트메일입니다.","ㅇㅇㅇ");
     }
 
 

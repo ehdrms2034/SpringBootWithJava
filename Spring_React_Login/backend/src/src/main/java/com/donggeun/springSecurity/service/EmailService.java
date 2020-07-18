@@ -1,5 +1,6 @@
 package com.donggeun.springSecurity.service;
 
 public interface EmailService {
-    void sendFirstVerificationMail(String to);
+
+    void sendMail(String to, String sub, String text);
 }

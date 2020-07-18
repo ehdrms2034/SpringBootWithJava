@@ -1,4 +1,4 @@
-package com.donggeun.springSecurity.model;
+package com.donggeun.springSecurity.model.Request;
 
 import lombok.Getter;
 import lombok.Setter;
