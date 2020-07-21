@@ -1,6 +1,8 @@
 package com.donggeun.springSecurity.controller;
 
 import com.donggeun.springSecurity.model.Member;
+import com.donggeun.springSecurity.model.Request.RequestChangePassword1;
+import com.donggeun.springSecurity.model.Request.RequestChangePassword2;
 import com.donggeun.springSecurity.model.Request.RequestLoginUser;
 import com.donggeun.springSecurity.model.Request.RequestVerifyEmail;
 import com.donggeun.springSecurity.model.Response;
@@ -77,16 +79,60 @@ public class MemberController {
     }
 
     @GetMapping("/verify/{key}")
-    public Response getVerify(@PathVariable String key){
+    public Response getVerify(@PathVariable String key) {
         Response response;
-        try{
+        try {
             authService.verifyEmail(key);
-            response = new Response("success","성공적으로 인증메일을 확인했습니다.",null);
+            response = new Response("success", "성공적으로 인증메일을 확인했습니다.", null);
 
-        }catch(Exception e){
-            response = new Response("error","인증메일을 확인하는데 실패했습니다.",null);
+        } catch (Exception e) {
+            response = new Response("error", "인증메일을 확인하는데 실패했습니다.", null);
         }
         return response;
+    }
+
+    @GetMapping("/password/{key}")
+    public Response isPasswordUUIdValidate(@PathVariable String key) {
+        Response response;
+        try {
+            if (authService.isPasswordUuidValidate(key))
+                response = new Response("success", "정상적인 접근입니다.", null);
+            else
+                response = new Response("error", "유효하지 않은 Key값입니다.", null);
+        } catch (Exception e) {
+            response = new Response("error", "유효하지 않은 key값입니다.", null);
+        }
+        return response;
+    }
+
+    @PostMapping("/password")
+    public Response requestChangePassword(@RequestBody RequestChangePassword1 requestChangePassword1) {
+        Response response;
+        try {
+            Member member = authService.findByUsername(requestChangePassword1.getUsername());
+            if (!member.getEmail().equals(requestChangePassword1.getEmail())) throw new NoSuchFieldException("");
+            authService.requestChangePassword(member);
+            response = new Response("success", "성공적으로 사용자의 비밀번호 변경요청을 수행했습니다.", null);
+        } catch (NoSuchFieldException e) {
+            response = new Response("error", "사용자 정보를 조회할 수 없습니다.", null);
+        } catch (Exception e) {
+            response = new Response("error", "비밀번호 변경 요청을 할 수 없습니다.", null);
+        }
+        return response;
+    }
+
+    @PutMapping("/password")
+    public Response changePassword(@RequestBody RequestChangePassword2 requestChangePassword2) {
+        Response response;
+        try{
+            Member member = authService.findByUsername(requestChangePassword2.getUsername());
+            authService.changePassword(member,requestChangePassword2.getPassword());
+            response = new Response("success","성공적으로 사용자의 비밀번호를 변경했습니다.",null);
+        }catch(Exception e){
+            response = new Response("error","사용자의 비밀번호를 변경할 수 없었습니다.",null);
+        }
+        return response;
+
     }
 
     @GetMapping("/test")

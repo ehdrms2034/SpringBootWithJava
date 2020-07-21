@@ -24,6 +24,7 @@ import java.util.UUID;
 @Slf4j
 public class AuthServiceImpl implements AuthService {
 
+
     @Autowired
     private MemberRepository memberRepository;
 
@@ -70,6 +71,7 @@ public class AuthServiceImpl implements AuthService {
         Member member = memberRepository.findByUsername(memberId);
         if(member==null) throw new NotFoundException("멤버가 조회되지않음");
         modifyUserRole(member,UserRole.ROLE_USER);
+        redisUtil.deleteData(key);
     }
 
     @Override
@@ -85,6 +87,31 @@ public class AuthServiceImpl implements AuthService {
     public void modifyUserRole(Member member, UserRole userRole){
             member.setRole(userRole);
             memberRepository.save(member);
+    }
+
+    @Override
+    public boolean isPasswordUuidValidate(String key){
+        String memberId = redisUtil.getData(key);
+        return !memberId.equals("");
+    }
+
+    @Override
+    public void changePassword(Member member,String password) throws NotFoundException{
+        if(member == null) throw new NotFoundException("changePassword(),멤버가 조회되지 않음");
+        String salt = saltUtil.genSalt();
+        member.setSalt(new Salt(salt));
+        member.setPassword(saltUtil.encodePassword(salt,password));
+        memberRepository.save(member);
+    }
+
+
+    @Override
+    public void requestChangePassword(Member member) throws NotFoundException{
+        String CHANGE_PASSWORD_LINK = "http://localhost:8080/user/password/";
+        if(member == null) throw new NotFoundException("멤버가 조회되지 않음.");
+        String key = REDIS_CHANGE_PASSWORD_PREFIX+UUID.randomUUID();
+        redisUtil.setDataExpire(key,member.getUsername(),60 * 30L);
+        emailService.sendMail(member.getEmail(),"[김동근 스프링] 사용자 비밀번호 안내 메일",CHANGE_PASSWORD_LINK+key);
     }
 
 
