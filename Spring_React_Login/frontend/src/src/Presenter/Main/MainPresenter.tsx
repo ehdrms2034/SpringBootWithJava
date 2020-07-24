@@ -1,7 +1,9 @@
 import * as React from "react";
-import { Input, Button, Form } from "antd";
+import { Input, Button, Form, Result } from "antd";
 import "./MainPresenter.scss";
-
+import NaverLogin from 'react-login-by-naver';
+import styled from 'styled-components';
+import naverImg from './naver_login.png';
 
 type MainPresenterProps = {
   username: string,
@@ -11,6 +13,16 @@ type MainPresenterProps = {
   doLogin: Function,
   doTest: Function
 }
+
+const NaverImage = styled.div`
+  margin-left : auto;
+  margin-right : auto;
+  background-image : url(${naverImg});
+  background-size : 300px 50px;
+  width : 300px;
+  height : 50px;
+  cursor : pointer;
+`;
 
 const MainPresenter = ({
   username, password,
@@ -63,6 +75,16 @@ const MainPresenter = ({
                 로그인
               </Button>
             </Form.Item>
+          </span>
+          <span className="socialLoginForm">
+              <NaverLogin
+                clientId="Rr5h5X4_s0B5nA3TlvQu"
+                callbackUrl="http://localhost:3000"
+                onSuccess={(result)=>{alert(result); console.log(result);}}
+                onFailure={()=>{alert("하이"); console.error();}}
+                render={(props)=> <NaverImage onClick={props.onClick}></NaverImage>}
+              >
+              </NaverLogin>
           </span>
         </div>
       </Form>
