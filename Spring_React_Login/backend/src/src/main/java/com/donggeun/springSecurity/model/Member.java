@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -23,16 +24,20 @@ public class Member {
     private int seq;
 
     @Column(unique = true)
-    @NotBlank
+    @NotNull
     private String username;
-    @NotBlank
+    @NotNull
     private String password;
     @NotBlank
     private String name;
     @NotBlank
     private String email;
-    @NotBlank
+    @NotNull
     private String address;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="social_id")
+    private SocialData social;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)

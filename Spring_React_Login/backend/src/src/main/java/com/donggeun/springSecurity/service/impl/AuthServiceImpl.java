@@ -2,9 +2,11 @@ package com.donggeun.springSecurity.service.impl;
 
 import com.donggeun.springSecurity.config.UserRole;
 import com.donggeun.springSecurity.model.Member;
+import com.donggeun.springSecurity.model.Request.RequestSocialData;
 import com.donggeun.springSecurity.model.Salt;
+import com.donggeun.springSecurity.model.SocialData;
 import com.donggeun.springSecurity.repository.MemberRepository;
-import com.donggeun.springSecurity.repository.SaltRepository;
+import com.donggeun.springSecurity.repository.SocialDataRepository;
 import com.donggeun.springSecurity.service.AuthService;
 import com.donggeun.springSecurity.service.EmailService;
 import com.donggeun.springSecurity.service.RedisUtil;
@@ -12,12 +14,9 @@ import com.donggeun.springSecurity.service.SaltUtil;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.Duration;
 import java.util.UUID;
 
 @Service
@@ -37,6 +36,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Autowired
+    private SocialDataRepository socialDataRepository;
+
     @Override
     @Transactional
     public void signUpUser(Member member) {
@@ -48,6 +50,26 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
+    public void signUpSocialUser(RequestSocialData member){
+        Member newMember = new Member();
+        newMember.setUsername(member.getId());
+        newMember.setPassword("");
+        newMember.setEmail(member.getEmail());
+        newMember.setName(member.getName());
+        newMember.setAddress("");
+        newMember.setSocial(new SocialData(member.getId(),member.getEmail(),member.getType()));
+        memberRepository.save(newMember);
+    }
+
+    @Override
+    public Member loginSocialUser(String id, String type) throws NotFoundException{
+        SocialData socialData = socialDataRepository.findByIdAndType(id,type);
+        if(socialData==null) throw new NotFoundException("멤버가 조회되지 않음");
+        return socialData.getMember();
+    }
+
+    @Override
     public Member loginUser(String id, String password) throws Exception{
         Member member = memberRepository.findByUsername(id);
         if(member==null) throw new Exception ("멤버가 조회되지 않음");
@@ -55,6 +77,8 @@ public class AuthServiceImpl implements AuthService {
         password = saltUtil.encodePassword(salt,password);
         if(!member.getPassword().equals(password))
             throw new Exception ("비밀번호가 틀립니다.");
+        if(member.getSocial()!=null)
+            throw new Exception ("소셜 계정으로 로그인 해주세요.");
         return member;
     }
 
