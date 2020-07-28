@@ -2,6 +2,7 @@ package com.donggeun.springSecurity.service;
 
 import com.donggeun.springSecurity.config.UserRole;
 import com.donggeun.springSecurity.model.Member;
+import com.donggeun.springSecurity.model.Request.RequestSocialData;
 import javassist.NotFoundException;
 
 public interface AuthService {
@@ -9,6 +10,10 @@ public interface AuthService {
     final String REDIS_CHANGE_PASSWORD_PREFIX="CPW";
 
     void signUpUser(Member member);
+
+    void signUpSocialUser(RequestSocialData member);
+
+    Member loginSocialUser(String id, String type) throws NotFoundException;
 
     Member loginUser(String id, String password) throws Exception;
 
