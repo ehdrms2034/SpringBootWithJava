@@ -12,6 +12,7 @@ type MainPresenterProps = {
   setPassword: Function;
   doLogin: Function;
   doTest: Function;
+  signUpByNaver: Function;
 };
 
 const NaverBtn = styled.div`
@@ -33,6 +34,7 @@ const MainPresenter = ({
   setPassword,
   doLogin,
   doTest,
+  signUpByNaver,
 }: MainPresenterProps) => {
   return (
     <div className={"background"}>
@@ -84,15 +86,13 @@ const MainPresenter = ({
             </Form.Item>
           </span>
           <span className="socialLoginForm">
-            <NaverLogin
+            {/* <NaverLogin
               clientId="Rr5h5X4_s0B5nA3TlvQu"
               callbackUrl="http://localhost:3000"
               onSuccess={(result) => {
-                alert(result);
                 console.log(result);
               }}
               onFailure={() => {
-                alert("하이");
                 console.error();
               }}
               render={(props) => (
@@ -100,14 +100,13 @@ const MainPresenter = ({
                   네이버 아이디로 로그인
                 </NaverBtn>
               )}
-            ></NaverLogin>
+            ></NaverLogin> */}
 
             <NaverLogin
               clientId="Rr5h5X4_s0B5nA3TlvQu"
               callbackUrl="http://localhost:3000"
               onSuccess={(result) => {
-                alert(result);
-                console.log(result);
+                signUpByNaver(result.id,result.email,result.name,"naver");
               }}
               onFailure={() => {
                 alert("하이");
