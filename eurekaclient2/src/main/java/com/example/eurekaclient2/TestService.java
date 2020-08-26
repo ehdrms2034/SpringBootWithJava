@@ -20,7 +20,7 @@ public class TestService {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(
                     name = "execution.isolation.thread.timeoutInMilliseconds",
-                    value = "10000"
+                    value = "13000"
             )},
             fallbackMethod = "buildFallbackMessageByClient1",
             threadPoolKey = "client1CommunicationThreadPool1",
