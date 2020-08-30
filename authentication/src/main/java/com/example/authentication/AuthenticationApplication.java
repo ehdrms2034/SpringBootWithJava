@@ -25,12 +25,12 @@ public class AuthenticationApplication {
         SpringApplication.run(AuthenticationApplication.class, args);
     }
 
-    @RequestMapping(value={"/"},method = RequestMethod.GET)
+    @RequestMapping(value={"/user"},method = RequestMethod.GET)
     public Map<String,Object> user(OAuth2Authentication user){
         Map<String,Object> userInfo = new HashMap<>();
         userInfo.put("user",user.getUserAuthentication().getPrincipal());
         userInfo.put("authorities", AuthorityUtils.authorityListToSet(user.getUserAuthentication().getAuthorities()));
         return userInfo;
     }
-    
+
 }
