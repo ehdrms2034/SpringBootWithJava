@@ -17,6 +17,9 @@ public class TestService {
     @Autowired
     private SleepHelper sleepHelper;
 
+    @Autowired
+    private SimpleSourceBean simpleSourceBean;
+
     @HystrixCommand(commandProperties = {
             @HystrixProperty(
                     name = "execution.isolation.thread.timeoutInMilliseconds",
@@ -38,5 +41,9 @@ public class TestService {
         HashMap<String, String> map = new HashMap<>();
         map.put("text", "이것은 서버1과의 연결이 여의치 않아 보여주는 폴백 프로세싱 메시지 입니다.");
         return map;
+    }
+
+    public void sendMessage(String content){
+        simpleSourceBean.publishEu2Change("SEND",content);
     }
 }

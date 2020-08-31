@@ -4,6 +4,16 @@ spring:
     name: eurekaclient2
   profiles:
     active: default
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: orgChangeTopic
+          content-type: application/json
+      kafka:
+        binder:
+          brokers: localhost
+          zkNodes: localhost
 
 eureka:
   instance:
@@ -19,5 +29,14 @@ security:
     resource:
       user-info-uri: http://localhost:4040/user
 
+
 server:
   port: 8182
+
+
+logging:
+  level: debug
+
+redis:
+  server: localhost
+  port: 6379
