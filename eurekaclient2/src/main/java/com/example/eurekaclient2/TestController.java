@@ -31,4 +31,12 @@ public class TestController {
         return ResponseEntity.status(200).body(data);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/send")
+    public ResponseEntity<?> test3(){
+        testService.sendMessage("서버2에서 카프카로 전송하는 메시지입니다.");
+        HashMap<String,String> data = new HashMap<>();
+        data.put("text","서버2에서 카프카로 전송하는 메시지입니다.");
+        return ResponseEntity.status(200).body(data);
+    }
+
 }
